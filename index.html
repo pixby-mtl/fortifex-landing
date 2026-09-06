@@ -498,13 +498,43 @@ function trackPhoneClick(source) {
   sendConversion('AW-18384067835/tvs9CMyT7OAcEPu5mr5E', function(){});
 }
 
-function submitLead(e) {
+async function submitLead(e) {
   e.preventDefault();
-  // Pas de webhook GHL pour ce client — la vraie soumission se fait sur le
-  // formulaire Wix de groupefortifex.ca, déjà confirmé fonctionnel.
+  var form = e.target;
+  var errorEl = document.getElementById('form-error');
+  errorEl.style.display = 'none';
+
+  var payload = {
+    name: form.name.value,
+    phone: form.phone.value,
+    message: form.message.value,
+    _subject: 'Nouveau lead — Groupe Fortifex (landing page)',
+    _cc: 'info@groupefortifex.com',
+    _template: 'table',
+    _captcha: 'false'
+  };
+
+  try {
+    // FormSubmit.co : un seul formulaire, pas de redirection vers Wix, pas
+    // de dépendance GHL. res.ok vérifié explicitement — fetch() ne lève pas
+    // d'erreur sur un 404/500 (c'est exactement ce qui a caché le bug du
+    // webhook GHL jamais branché avant aujourd'hui).
+    var res = await fetch('https://formsubmit.co/ajax/admin@pixby.ca', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+  } catch (err) {
+    errorEl.style.display = 'block';
+    return false;
+  }
+
   sendConversion('AW-18384067835/wC-BCMr7geAcEPu5mr5E', function () {
-    window.location.href = 'https://www.groupefortifex.ca/estimation-gratuite';
+    form.style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
   });
+
   return false;
 }
 </script>
