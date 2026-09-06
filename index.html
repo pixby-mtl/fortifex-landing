@@ -498,36 +498,13 @@ function trackPhoneClick(source) {
   sendConversion('AW-18384067835/tvs9CMyT7OAcEPu5mr5E', function(){});
 }
 
-async function submitLead(e) {
+function submitLead(e) {
   e.preventDefault();
-  var form = e.target;
-  var errorEl = document.getElementById('form-error');
-  errorEl.style.display = 'none';
-
-  var payload = {
-    firstName: form.name.value,
-    phone: form.phone.value,
-    message: form.message.value,
-    source: 'landing-groupe-fortifex'
-  };
-
-  try {
-    // TODO AVANT LANCEMENT : remplacer par le vrai webhook GHL
-    await fetch('{{GHL_WEBHOOK_URL}}', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-  } catch (err) {
-    errorEl.style.display = 'block';
-    return false;
-  }
-
+  // Pas de webhook GHL pour ce client — la vraie soumission se fait sur le
+  // formulaire Wix de groupefortifex.ca, déjà confirmé fonctionnel.
   sendConversion('AW-18384067835/wC-BCMr7geAcEPu5mr5E', function () {
-    form.style.display = 'none';
-    document.getElementById('form-success').style.display = 'block';
+    window.location.href = 'https://www.groupefortifex.ca/estimation-gratuite';
   });
-
   return false;
 }
 </script>
