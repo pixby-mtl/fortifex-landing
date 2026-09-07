@@ -272,8 +272,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="container hero-grid">
     <div>
       <span class="eyebrow">Île-Perrot &amp; Ouest-de-l'Île</span>
-      <h1>Toiture &amp; revêtement <em>haut de gamme</em>, construits pour l'hiver québécois</h1>
-      <p class="sub">Projets de remplacement complet, réalisés par une équipe locale et propriétaire, avec des matériaux conçus pour tenir face aux cycles de gel-dégel du Québec.</p>
+      <h1 id="hero-h1">Toiture &amp; revêtement <em>haut de gamme</em>, construits pour l'hiver québécois</h1>
+      <p class="sub" id="hero-sub">Projets de remplacement complet, réalisés par une équipe locale et propriétaire, avec des matériaux conçus pour tenir face aux cycles de gel-dégel du Québec.</p>
       <div class="hero-ctas">
         <a href="#soumission" class="btn btn-primary">Obtenir mon estimation gratuite</a>
         <a href="tel:+15149269513" class="btn btn-outline" onclick="trackPhoneClick('hero')">(514) 926-9513</a>
@@ -289,6 +289,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 </section>
+
+<script>
+// Message-match par groupe d'annonces : chaque URL finale Google Ads ajoute
+// ?s=<service> (ex: ?s=revetement). Le H1/sous-titre reprennent alors le
+// titre exact pinglé de l'annonce (message match verbatim), au lieu du H1
+// générique "Toiture & revêtement" utilisé pour le trafic direct/organique.
+// Aucun changement pour les visiteurs sans param (comportement par défaut inchangé).
+(function () {
+  var SERVICES = {
+    revetement: {
+      h1: 'Revêtement extérieur <em>haut de gamme</em>, construit pour l\'hiver québécois',
+      sub: 'Remplacement complet de revêtement extérieur (vinyle, aluminium, CanExel, fibrociment), réalisé par une équipe locale et propriétaire, conçu pour les cycles de gel-dégel du Québec.'
+    },
+    toiture: {
+      h1: 'Remplacement de toiture <em>haut de gamme</em>, construit pour l\'hiver québécois',
+      sub: 'Remplacement complet de toiture résidentielle, réalisé par une équipe locale et propriétaire, avec des matériaux conçus pour les hivers québécois.'
+    },
+    calfeutrage: {
+      h1: 'Calfeutrage portes &amp; fenêtres <em>professionnel</em>, pour l\'hiver québécois',
+      sub: 'Calfeutrage complet portes et fenêtres, fini les courants d\'air — réalisé par une équipe locale et propriétaire.'
+    },
+    soffites: {
+      h1: 'Soffites, fascias &amp; gouttières <em>sur mesure</em>, pour l\'hiver québécois',
+      sub: 'Soffites, fascias et gouttières en aluminium sur mesure, installés par une équipe locale et propriétaire, conçus pour les hivers québécois.'
+    }
+  };
+  var s = new URLSearchParams(window.location.search).get('s');
+  var cfg = s && SERVICES[s];
+  if (cfg) {
+    document.getElementById('hero-h1').innerHTML = cfg.h1;
+    document.getElementById('hero-sub').textContent = cfg.sub;
+  }
+})();
+</script>
 
 <!-- ============================================================
      STATS — chiffres réels, repris du site principal
