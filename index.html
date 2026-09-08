@@ -49,7 +49,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
      ============================================================ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<!-- Deux requêtes séparées, display différent par famille (CLS mesuré à 0,311 le 7 sept) :
+     Big Shoulders Display sert aux H1/H2/chiffres de stats en gros corps — un swap tardif
+     y déplace le plus de pixels. display=optional : le navigateur ne bascule sur la police
+     custom que si elle est déjà en cache/rapide, sinon reste sur le fallback pour cette vue —
+     zéro reflow, au prix d'un fallback occasionnel. Work Sans sert au corps de texte, à des
+     tailles proches du fallback : display=swap suffit (texte jamais invisible, décalage minime). -->
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&display=optional" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
 <!-- FAQ structurée pour moteurs de recherche IA (ChatGPT, Gemini, AI Overviews) -->
 <script type="application/ld+json">
@@ -487,6 +494,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <textarea id="f-message" name="message" rows="3"></textarea>
       </div>
       <button type="submit" class="btn btn-primary" style="width:100%">Obtenir mon estimation gratuite</button>
+      <p style="font-size:12.5px;color:var(--graphite);margin-top:10px;text-align:center">Vos informations servent uniquement à vous recontacter pour votre soumission — jamais partagées ni revendues.</p>
       <div id="form-error">Erreur d'envoi — appelez-nous directement au (514) 926-9513.</div>
     </form>
     <div id="form-success" class="form-wrap">
@@ -501,7 +509,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      ============================================================ -->
 <footer>
   <div class="container">
-    <div>Groupe Fortifex — Île-Perrot, Pincourt, Vaudreuil-Dorion et l'Ouest-de-l'Île · RBQ 5879-1849-01</div>
+    <div>© 2026 Groupe Fortifex — Île-Perrot, Pincourt, Vaudreuil-Dorion et l'Ouest-de-l'Île · RBQ 5879-1849-01</div>
     <div><a href="tel:+15149269513">(514) 926-9513</a></div>
   </div>
 </footer>
