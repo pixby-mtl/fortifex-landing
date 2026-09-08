@@ -520,6 +520,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
+// Normalise un numéro QC/CA en E.164 (+1XXXXXXXXXX) — format attendu par la
+// variable "User-Provided Data" de Google Ads pour le suivi avancé des
+// conversions (activé au niveau du compte le 7 sept, câblage GTM à finaliser
+// manuellement — voir project_groupe_fortifex memory).
+function normalizePhoneE164(raw) {
+  var digits = (raw || '').replace(/\D/g, '');
+  if (digits.length === 10) return '+1' + digits;
+  if (digits.length === 11 && digits.charAt(0) === '1') return '+' + digits;
+  return null;
+}
+
 function sendConversion(sendTo, callback) {
   var called = false;
   var safeCallback = function () {
@@ -570,6 +581,15 @@ async function submitLead(e) {
   } catch (err) {
     errorEl.style.display = 'block';
     return false;
+  }
+
+  var e164Phone = normalizePhoneE164(form.phone.value);
+  if (e164Phone) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'lead_form_submitted',
+      user_data_phone: e164Phone
+    });
   }
 
   sendConversion('AW-18384067835/wC-BCMr7geAcEPu5mr5E', function () {
