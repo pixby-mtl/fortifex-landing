@@ -308,19 +308,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var SERVICES = {
     revetement: {
       h1: 'Revêtement extérieur <em>haut de gamme</em>, construit pour l\'hiver québécois',
-      sub: 'Remplacement complet de revêtement extérieur (vinyle, aluminium, CanExel, fibrociment), réalisé par une équipe locale et propriétaire, conçu pour les cycles de gel-dégel du Québec.'
+      sub: 'Remplacement complet de revêtement extérieur (vinyle, aluminium, CanExel, fibrociment), réalisé par une équipe locale et propriétaire, conçu pour les cycles de gel-dégel du Québec.',
+      title: 'Revêtement Extérieur | Groupe Fortifex — Île-Perrot & West Island',
+      meta: 'Remplacement et installation de revêtement extérieur à Île-Perrot, Vaudreuil et West Island. RBQ 5879-1849-01. Soumission gratuite.'
     },
     toiture: {
       h1: 'Remplacement de toiture <em>haut de gamme</em>, construit pour l\'hiver québécois',
-      sub: 'Remplacement complet de toiture résidentielle, réalisé par une équipe locale et propriétaire, avec des matériaux conçus pour les hivers québécois.'
+      sub: 'Remplacement complet de toiture résidentielle, réalisé par une équipe locale et propriétaire, avec des matériaux conçus pour les hivers québécois.',
+      title: 'Remplacement Toiture | Groupe Fortifex — Île-Perrot & West Island',
+      meta: 'Installation et remplacement de toiture résidentielle à Île-Perrot, Vaudreuil et West Island. Soumission gratuite.'
     },
     calfeutrage: {
       h1: 'Calfeutrage portes &amp; fenêtres <em>professionnel</em>, pour l\'hiver québécois',
-      sub: 'Calfeutrage complet portes et fenêtres, fini les courants d\'air — réalisé par une équipe locale et propriétaire.'
+      sub: 'Calfeutrage complet portes et fenêtres, fini les courants d\'air — réalisé par une équipe locale et propriétaire.',
+      title: 'Calfeutrage Portes & Fenêtres | Groupe Fortifex — Île-Perrot & West Island',
+      meta: 'Calfeutrage professionnel de portes et fenêtres à Île-Perrot, Vaudreuil et West Island. Soumission gratuite.'
     },
     soffites: {
       h1: 'Soffites, fascias &amp; gouttières <em>sur mesure</em>, pour l\'hiver québécois',
-      sub: 'Soffites, fascias et gouttières en aluminium sur mesure, installés par une équipe locale et propriétaire, conçus pour les hivers québécois.'
+      sub: 'Soffites, fascias et gouttières en aluminium sur mesure, installés par une équipe locale et propriétaire, conçus pour les hivers québécois.',
+      title: 'Soffites & Fascias | Groupe Fortifex — Île-Perrot & West Island',
+      meta: 'Installation et remplacement de soffites et fascias à Île-Perrot, Vaudreuil et West Island. Soumission gratuite.'
     }
   };
   var s = new URLSearchParams(window.location.search).get('s');
@@ -328,6 +336,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   if (cfg) {
     document.getElementById('hero-h1').innerHTML = cfg.h1;
     document.getElementById('hero-sub').textContent = cfg.sub;
+    document.title = cfg.title;
+    var metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', cfg.meta);
   }
 })();
 </script>
