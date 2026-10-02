@@ -356,12 +356,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     // que du remplacement complet", ce qui exclut le calfeutrage). Corrigé
     // le 2026-10-02 suite a un post_click_quality_score BELOW_AVERAGE
     // observe sur tous les mots-cles de la campagne.
-    var faqQEl = document.getElementById('faq1-q');
-    var faqAEl = document.getElementById('faq1-a');
-    if (faqQEl && cfg.faqQ) faqQEl.textContent = cfg.faqQ;
-    if (faqAEl && cfg.faqA) faqAEl.textContent = cfg.faqA;
-    var labelEl = document.getElementById('f-message-label');
-    if (labelEl && cfg.formLabel) labelEl.textContent = cfg.formLabel;
+    // Différé à DOMContentLoaded : la FAQ et le formulaire sont plus bas
+    // dans le document, donc pas encore dans le DOM quand ce <script>
+    // (placé juste après le hero) s'exécute.
+    document.addEventListener('DOMContentLoaded', function () {
+      var faqQEl = document.getElementById('faq1-q');
+      var faqAEl = document.getElementById('faq1-a');
+      if (faqQEl && cfg.faqQ) faqQEl.textContent = cfg.faqQ;
+      if (faqAEl && cfg.faqA) faqAEl.textContent = cfg.faqA;
+      var labelEl = document.getElementById('f-message-label');
+      if (labelEl && cfg.formLabel) labelEl.textContent = cfg.formLabel;
+    });
   }
 })();
 </script>
