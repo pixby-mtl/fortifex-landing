@@ -310,25 +310,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       h1: 'Revêtement extérieur <em>haut de gamme</em>, construit pour l\'hiver québécois',
       sub: 'Remplacement complet de revêtement extérieur (vinyle, aluminium, CanExel, fibrociment), réalisé par une équipe locale et propriétaire, conçu pour les cycles de gel-dégel du Québec.',
       title: 'Revêtement Extérieur | Groupe Fortifex — Île-Perrot & West Island',
-      meta: 'Remplacement et installation de revêtement extérieur à Île-Perrot, Vaudreuil et West Island. RBQ 5879-1849-01. Soumission gratuite.'
+      meta: 'Remplacement et installation de revêtement extérieur à Île-Perrot, Vaudreuil et West Island. RBQ 5879-1849-01. Soumission gratuite.',
+      faqQ: 'Faites-vous des réparations ponctuelles de revêtement?',
+      faqA: 'Nous nous concentrons sur le remplacement complet de revêtement extérieur, pour un résultat uniforme et durable plutôt que des retouches ponctuelles.',
+      formLabel: 'Décrivez votre projet de revêtement extérieur'
     },
     toiture: {
       h1: 'Remplacement de toiture <em>haut de gamme</em>, construit pour l\'hiver québécois',
       sub: 'Remplacement complet de toiture résidentielle, réalisé par une équipe locale et propriétaire, avec des matériaux conçus pour les hivers québécois.',
       title: 'Remplacement Toiture | Groupe Fortifex — Île-Perrot & West Island',
-      meta: 'Installation et remplacement de toiture résidentielle à Île-Perrot, Vaudreuil et West Island. Soumission gratuite.'
+      meta: 'Installation et remplacement de toiture résidentielle à Île-Perrot, Vaudreuil et West Island. Soumission gratuite.',
+      faqQ: 'Faites-vous des réparations ponctuelles de toiture?',
+      faqA: 'Nous nous concentrons sur le remplacement complet de toiture, pour une protection uniforme et durable plutôt que des réparations ponctuelles.',
+      formLabel: 'Décrivez votre projet de toiture'
     },
     calfeutrage: {
       h1: 'Calfeutrage portes &amp; fenêtres <em>professionnel</em>, pour l\'hiver québécois',
       sub: 'Calfeutrage complet portes et fenêtres, fini les courants d\'air — réalisé par une équipe locale et propriétaire.',
       title: 'Calfeutrage Portes & Fenêtres | Groupe Fortifex — Île-Perrot & West Island',
-      meta: 'Calfeutrage professionnel de portes et fenêtres à Île-Perrot, Vaudreuil et West Island. Soumission gratuite.'
+      meta: 'Calfeutrage professionnel de portes et fenêtres à Île-Perrot, Vaudreuil et West Island. Soumission gratuite.',
+      faqQ: 'Le calfeutrage, est-ce un service à part entière chez vous?',
+      faqA: 'Oui. Le calfeutrage de portes et fenêtres est un service à part entière, réalisé par la même équipe propriétaire que nos projets de toiture, revêtement et soffites — pour éliminer les courants d\'air et protéger votre maison pour l\'hiver.',
+      formLabel: 'Décrivez votre projet de calfeutrage (portes, fenêtres...)'
     },
     soffites: {
       h1: 'Soffites, fascias &amp; gouttières <em>sur mesure</em>, pour l\'hiver québécois',
       sub: 'Soffites, fascias et gouttières en aluminium sur mesure, installés par une équipe locale et propriétaire, conçus pour les hivers québécois.',
       title: 'Soffites & Fascias | Groupe Fortifex — Île-Perrot & West Island',
-      meta: 'Installation et remplacement de soffites et fascias à Île-Perrot, Vaudreuil et West Island. Soumission gratuite.'
+      meta: 'Installation et remplacement de soffites et fascias à Île-Perrot, Vaudreuil et West Island. Soumission gratuite.',
+      faqQ: 'Faites-vous des réparations ponctuelles de soffites et fascias?',
+      faqA: 'Nous installons des soffites, fascias et gouttières complets sur mesure, pour un résultat uniforme plutôt que des retouches ponctuelles.',
+      formLabel: 'Décrivez votre projet de soffites/fascias'
     }
   };
   var s = new URLSearchParams(window.location.search).get('s');
@@ -339,6 +351,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     document.title = cfg.title;
     var metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute('content', cfg.meta);
+    // Message-match étendu : la FAQ #1 et le placeholder du formulaire
+    // contredisaient l'annonce (ex: calfeutrage -> FAQ disait "on ne fait
+    // que du remplacement complet", ce qui exclut le calfeutrage). Corrigé
+    // le 2026-10-02 suite a un post_click_quality_score BELOW_AVERAGE
+    // observe sur tous les mots-cles de la campagne.
+    var faqQEl = document.getElementById('faq1-q');
+    var faqAEl = document.getElementById('faq1-a');
+    if (faqQEl && cfg.faqQ) faqQEl.textContent = cfg.faqQ;
+    if (faqAEl && cfg.faqA) faqAEl.textContent = cfg.faqA;
+    var labelEl = document.getElementById('f-message-label');
+    if (labelEl && cfg.formLabel) labelEl.textContent = cfg.formLabel;
   }
 })();
 </script>
@@ -451,8 +474,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="faq-list">
       <details class="faq-item" open>
-        <summary>Faites-vous des réparations ponctuelles?</summary>
-        <p class="faq-a">Non. Groupe Fortifex se concentre exclusivement sur les projets de remplacement complet — toiture, revêtement extérieur, soffites et fascias — pour garantir un travail à la hauteur de nos standards.</p>
+        <summary id="faq1-q">Faites-vous des réparations ponctuelles?</summary>
+        <p class="faq-a" id="faq1-a">Non. Groupe Fortifex se concentre exclusivement sur les projets de remplacement complet — toiture, revêtement extérieur, soffites et fascias — pour garantir un travail à la hauteur de nos standards.</p>
       </details>
       <details class="faq-item">
         <summary>Quels types de projets réalisez-vous?</summary>
@@ -502,7 +525,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <input id="f-phone" name="phone" type="tel" required>
       </div>
       <div class="field">
-        <label for="f-message">Décrivez votre projet (toiture, revêtement, soffites/fascias...)</label>
+        <label for="f-message" id="f-message-label">Décrivez votre projet (toiture, revêtement, soffites/fascias...)</label>
         <textarea id="f-message" name="message" rows="3"></textarea>
       </div>
       <p style="font-size:12.5px;color:var(--graphite);margin-bottom:14px;text-align:center">RBQ 5879-1849-01 · Licencié &amp; assuré · Installations garanties</p>
