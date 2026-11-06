@@ -610,18 +610,53 @@ async function submitLead(e) {
     _captcha: 'false'
   };
 
-  try {
-    // FormSubmit.co : un seul formulaire, pas de redirection vers Wix, pas
-    // de dépendance GHL. res.ok vérifié explicitement — fetch() ne lève pas
-    // d'erreur sur un 404/500 (c'est exactement ce qui a caché le bug du
-    // webhook GHL jamais branché avant aujourd'hui).
-    var res = await fetch('https://formsubmit.co/ajax/admin@pixby.ca', {
+  // Envoi : FormSubmit (courriel, cc Rob) en PRIMAIRE avec délai de 8 s; si échec ou
+  // panne (FormSubmit a été en panne le 2026-11-06), SECOURS via le webhook GHL de
+  // Pixby (alerte SMS à Alexander, qui relaie à Rob) pendant la période hybride;
+  // si les deux échouent, message d'erreur avec le numéro à appeler.
+  var submitBtn = form.querySelector('button[type="submit"], input[type="submit"]');
+  if (window.__fxSubmitting) return false;
+  window.__fxSubmitting = true;
+  var btnLabel = submitBtn ? (submitBtn.textContent || submitBtn.value) : null;
+  if (submitBtn) { submitBtn.disabled = true; if (submitBtn.textContent) submitBtn.textContent = 'Envoi en cours…'; }
+  function post(url, body, ms, isFs) {
+    var ctl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var timer = ctl ? setTimeout(function () { ctl.abort(); }, ms) : null;
+    return fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-  } catch (err) {
+      headers: isFs ? { 'Content-Type': 'application/json', 'Accept': 'application/json' } : { 'Content-Type': 'application/json' },
+      keepalive: true, body: JSON.stringify(body), signal: ctl ? ctl.signal : undefined
+    }).then(function (res) {
+      if (timer) clearTimeout(timer);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      if (!isFs) return res;
+      return res.clone().json().catch(function () { return null; }).then(function (j) {
+        if (j && (j.success === false || j.success === 'false')) throw new Error('FormSubmit refusé');
+        return res;
+      });
+    }, function (err) { if (timer) clearTimeout(timer); throw err; });
+  }
+  var sent = false;
+  try {
+    await post('https://formsubmit.co/ajax/admin@pixby.ca', Object.assign({}, payload, { delivery_channel: 'formsubmit' }), 8000, true);
+    sent = true;
+  } catch (err1) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'lead_channel_fallback', form_name: 'fortifex-landing', error: String(err1 && err1.message || err1) });
+    try {
+      await post('https://services.leadconnectorhq.com/hooks/nOKP2se5Yu47dcgLrUmm/webhook-trigger/2ecf69df-873d-401d-aa69-91881c08edc7', {
+        first_name: payload.name, phone: payload.phone, message: payload.message,
+        company_name: 'Groupe Fortifex (landing FR)', form_name: 'fortifex-landing',
+        page_source: window.location.href, service_page: payload.service_page || '',
+        delivery_channel: 'fallback-ghl',
+        idempotency_key: 'fx_' + Date.now() + '_' + Math.random().toString(36).slice(2)
+      }, 12000, false);
+      sent = true;
+    } catch (err2) { sent = false; }
+  }
+  if (!sent) {
+    window.__fxSubmitting = false;
+    if (submitBtn) { submitBtn.disabled = false; if (btnLabel && submitBtn.textContent) submitBtn.textContent = btnLabel; }
     errorEl.style.display = 'block';
     return false;
   }
